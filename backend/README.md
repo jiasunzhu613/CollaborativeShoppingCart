@@ -4,7 +4,7 @@
 1. Download Postgres
 2. Create a local DB using: `createdb [db_name]`
 3. Access the DB that was created: `psql [db_name]`
-4. Create a `.env` file in the `backend` directory and add a field names `DATABASE_URL`, following the following formating:
+4. Create a `.env` file in the `backend` directory and add a field name `DATABASE_URL`, following the following formating:
 `DATABASE_URL=postgresql+psycopg2://user:password@hostname/database_name`
 
 
