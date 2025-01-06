@@ -1,6 +1,9 @@
-from sqlalchemy.orm import Mapped, mapped_column, relationship 
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import String
+from sqlalchemy import ForeignKey
+from backend.cart.model import Cart
 from backend import db
+import uuid
 
 """
 CartItem schema: [generate multiple of same cartitem? Or no?]
@@ -9,9 +12,10 @@ itemName: String
 Quantity: int
 """
 class Cart_Item(db.Model):
-    __tablename__ = "cart_items_table"
+    __tablename__ = "cart_item_table"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    cart_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("cart_table.id"))
     item_name: Mapped[str] = mapped_column()
     quantity: Mapped[int] = mapped_column()
 

@@ -6,6 +6,7 @@ from flask.cli import with_appcontext
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from dotenv import load_dotenv
+# from psycopg2 import 
 
 
 # Load .env file
@@ -27,9 +28,9 @@ def create_app():
 
     db_url = os.getenv("DATABASE_URL")
 
-    if db_url is None:
-        # default to a sqlite database in the instance folder
-        db_url = "sqlite:///backend.db"
+    # if db_url is None:
+    #     # default to a sqlite database in the instance folder
+    #     db_url = "sqlite:///backend.db"
 
     # Configure SQlalchemy db 
     app.config.from_mapping(
@@ -44,8 +45,10 @@ def create_app():
     app.cli.add_command(init_db_command) 
 
     # Register blueprints
-    from backend import cart
+    from backend import cart, cart_item, user
     app.register_blueprint(cart.bp, url_prefix="/cart")
+    app.register_blueprint(cart_item.bp, url_prefix="/cart_item")
+    # app.register_blueprint(user.bp, url_prefix="/user")
 
     return app
 
