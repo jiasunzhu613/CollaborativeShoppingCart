@@ -14,7 +14,7 @@
 >3. Once inside DB, run: `\du` details of the users of the DB
 >4. To create or change a user's password to the DB, use:
  `ALTER USER user_name WITH PASSWORD 'new_password';`
-> 
+>5. Inside the DB, run: `\d` to see all existing tables
 
 ## Flask-SQLAlchemy Quickstart
 1. `cd backend` (if you are not yet in the backend folder)
