@@ -8,15 +8,22 @@ from ..cart_item.model import Cart_Item
 bp = Blueprint("cart_item", __name__)
 
 
-@bp.route("/", methods=["POST"]) # TODO: do you think its better for the route to be "/<cart_id>" then have no request field named cart_id?
-def create_cart_item():
+@bp.route("/<incoming_cart_id>", methods=["POST"]) # TODO: do you think its better for the route to be "/<cart_id>" then have no request field named cart_id?
+def create_cart_item(incoming_cart_id):
+    data = request.json
+
     query = insert(Cart_Item).\
-            values([request.get_json()]).\
+            values(
+                cart_id=incoming_cart_id,
+                item_name=data.get("item_name", ""),
+                quantity=data.get("quantity", 0)
+            ).\
             returning(Cart_Item.id)
 
     cart_item = db.session.execute(query)
     db.session.commit()
     # print(cart_item)
+    # NOTE: fetchone() fetches one object returned from the RETURNING (sqlalchemy equivalent is .returning()) keyword
     return jsonify({"id": cart_item.fetchone()[0]}) # https://docs.sqlalchemy.org/en/20/core/dml.html#sqlalchemy.sql.expression.Insert.returning
 
 
