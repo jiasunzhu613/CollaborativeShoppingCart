@@ -31,11 +31,10 @@ class Cart(db.Model):
     title: Mapped[str] = mapped_column()
     description: Mapped[str | None] = mapped_column()
     date_created: Mapped[datetime.datetime] = mapped_column()
-    cart_items: Mapped[List["Cart_Item"] | None] = relationship(cascade="all, delete")  
+    cart_items: Mapped[List["Cart_Item"] | None] = relationship(cascade="all, delete, delete-orphan")  
+    # If the user is unregistered, creator will be set to null
     creator: Mapped[str | None] = mapped_column(ForeignKey("user_table.id"))# "User" | None is equivalent to Optional["User"] indicating nullable field
-        # TODO: does this need back_population? 
-        # TODO: do we want unregistered users to be able to make carts?
-    # users: Mapped[List[String] | None] = mapped_column() # users who can edit metadata 
+    users: Mapped[str| None] = mapped_column() # users who can edit metadata, stored in the format "{id},{id},{id}" and so on
 
 
 

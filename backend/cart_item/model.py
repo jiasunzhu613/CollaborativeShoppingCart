@@ -15,7 +15,8 @@ class Cart_Item(db.Model):
     __tablename__ = "cart_item_table"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    cart_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("cart_table.id"))
+    cart_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("cart_table.id", ondelete='CASCADE'))
+    cart: Mapped["Cart"] = relationship() # NOTE: I guess if you have a foreign key you must also have a field that holds the foreign object?
     item_name: Mapped[str] = mapped_column()
     quantity: Mapped[int] = mapped_column()
 

@@ -1,5 +1,5 @@
 from flask import Flask, request, Blueprint, jsonify
-from sqlalchemy import insert, select
+from sqlalchemy import insert, select, update
 from backend import db
 from ..cart_item.model import Cart_Item
 
@@ -7,8 +7,12 @@ from ..cart_item.model import Cart_Item
 # Create blueprint for endpoints
 bp = Blueprint("cart_item", __name__)
 
+"""
+TODO: 
+- update, delete
+"""
 
-@bp.route("/<incoming_cart_id>", methods=["POST"]) # TODO: do you think its better for the route to be "/<cart_id>" then have no request field named cart_id?
+@bp.route("/<incoming_cart_id>", methods=["POST"])
 def create_cart_item(incoming_cart_id):
     data = request.json
 
@@ -22,7 +26,6 @@ def create_cart_item(incoming_cart_id):
 
     cart_item = db.session.execute(query)
     db.session.commit()
-    # print(cart_item)
     # NOTE: fetchone() fetches one object returned from the RETURNING (sqlalchemy equivalent is .returning()) keyword
     return jsonify({"id": cart_item.fetchone()[0]}) # https://docs.sqlalchemy.org/en/20/core/dml.html#sqlalchemy.sql.expression.Insert.returning
 
@@ -49,5 +52,20 @@ def get_cart_item_by_id(cart_item_id):
                 "quantity": item.quantity
     })
 
+@bp.route("/<cart_item_id>", methods=["PUT"])
+def update_cart_item_by_id(cart_item_id):
+    data = request.json
+    
+    cart_item = db.session.scalars(select(Cart_Item).where(Cart_Item.id == cart_item_id)).one()
+    query = update(Cart_Item).\
+            where(Cart_Item.id == cart_item_id).\
+            values(
+                item_name=data.get("item_name", cart_item.item_name),
+                quantity=data.get("quantity", cart_item.quantity)
+            ).\
+            returning(Cart_Item.id)
+    cart_item = db.session.execute(query)
+    db.session.commit()
+    return jsonify({"id": cart_item.fetchone()[0]})
 
 
