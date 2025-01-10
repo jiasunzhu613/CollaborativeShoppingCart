@@ -26,7 +26,7 @@ def create_app():
     # Create Flask application
     app = Flask(__name__)
 
-    db_url = os.getenv("DATABASE_URL")
+    db_uri = os.getenv("DATABASE_URI")
 
     # if db_url is None:
     #     # default to a sqlite database in the instance folder
@@ -35,7 +35,7 @@ def create_app():
     # Configure SQlalchemy db 
     app.config.from_mapping(
         SECRET_KEY=os.environ.get("SECRET_KEY", "dev"),
-        SQLALCHEMY_DATABASE_URI=db_url, # remember to capitalize everything
+        SQLALCHEMY_DATABASE_URI=db_uri, # remember to capitalize everything
     )
 
     # TODO: add config file?
