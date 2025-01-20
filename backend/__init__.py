@@ -6,6 +6,7 @@ from flask.cli import with_appcontext
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from dotenv import load_dotenv
+from flask_cors import CORS
 # from psycopg2 import 
 
 
@@ -20,6 +21,7 @@ class Base(DeclarativeBase): # remember to define as class!
 
 # Create SQL db model that will load a db engine
 db = SQLAlchemy(model_class=Base)
+cors = CORS()
 
 
 def create_app():
@@ -43,6 +45,9 @@ def create_app():
     # Initialize Flask-SQLalchemy and database
     db.init_app(app)
     app.cli.add_command(init_db_command) 
+
+    # Initialize CORS 
+    cors.init_app(app, origins=["http://localhost:*"])
 
     # Register blueprints
     from backend import cart, cart_item, user

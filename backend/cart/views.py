@@ -20,28 +20,42 @@ def get_time_now():
 @bp.route("/", methods=["POST"])
 def create_cart():
     data = request.json
+    # query = 
     cart = db.session.execute(insert(Cart).values(
         title=data.get("title", None),
         description=data.get("description", None),
         date_created=get_time_now(),
         creator=data.get("creator", None),
         users=""
-        ))
+        ).\
+        returning(Cart))
     db.session.commit()
-    return jsonify({"id": cart.inserted_primary_key[0]}) # https://docs.sqlalchemy.org/en/20/tutorial/data_insert.html#the-insert-sql-expression-construct
+    # fetchone() returns one row from the returning statement we have above, index 0 contains our desired cart return object
+    cart_returned = cart.fetchone()[0] 
+    return jsonify({
+        "id": cart_returned.id,
+        "title": cart_returned.title,
+        "description": cart_returned.description,
+        "date_created": cart_returned.date_created,
+        # "cart_items": c.cart_items, # if you want to see the cart items, currently only way is to query again by id
+        "creator": cart_returned.creator,
+        "users": cart_returned.users
+    })
 
 @bp.route("/", methods=["GET"])
 def get_all_carts():
-    carts = db.session.scalars(select(Cart)).all()
-    return jsonify([{"count": len(carts)}] + [{
-                "id": c.id,
-                "title": c.title,
-                "description": c.description,
-                "date_created": c.date_created,
-                # "cart_items": c.cart_items, # if you want to see the cart items, currently only way is to query again by id
-                "creator": c.creator,
-                "users": c.users
-        } for c in carts])
+    carts = db.session.scalars(select(Cart).order_by(Cart.date_created.desc())).all() # returns all carts sorted by descending date created
+    return jsonify(
+        {"count": len(carts),
+            "data" : [{
+            "id": c.id,
+            "title": c.title,
+            "description": c.description,
+            "date_created": c.date_created,
+            # "cart_items": c.cart_items, # if you want to see the cart items, currently only way is to query again by id
+            "creator": c.creator,
+            "users": c.users
+        } for c in carts]})
 
 @bp.route("/<cart_id>", methods=["GET"])
 def get_cart_by_id(cart_id):
@@ -52,7 +66,7 @@ def get_cart_by_id(cart_id):
         "item_name": item.item_name,
         "quantity": item.quantity
     } for item in items]
-    return jsonify({
+    return jsonify({"data" : {
                 "id": cart.id,
                 "title": cart.title,
                 "description": cart.description,
@@ -60,7 +74,7 @@ def get_cart_by_id(cart_id):
                 "cart_items": cart_items,
                 "creator": cart.creator,
                 "users": cart.users
-           })
+           }})
 
 @bp.route("/<cart_id>", methods=["PUT"])
 def update_cart_by_id(cart_id):
