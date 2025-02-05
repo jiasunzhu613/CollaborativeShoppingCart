@@ -22,12 +22,18 @@ def create_cart_item(incoming_cart_id):
                 item_name=data.get("item_name", ""),
                 quantity=data.get("quantity", 0)
             ).\
-            returning(Cart_Item.id)
+            returning(Cart_Item)
 
     cart_item = db.session.execute(query)
     db.session.commit()
+    item_returned = cart_item.fetchone()[0] 
     # NOTE: fetchone() fetches one object returned from the RETURNING (sqlalchemy equivalent is .returning()) keyword
-    return jsonify({"id": cart_item.fetchone()[0]}) # https://docs.sqlalchemy.org/en/20/core/dml.html#sqlalchemy.sql.expression.Insert.returning
+    return jsonify({
+        "id": item_returned.id,
+        "item_name": item_returned.item_name,
+        "quantity": item_returned.quantity,
+        "cart_id": item_returned.cart_id
+        }) # https://docs.sqlalchemy.org/en/20/core/dml.html#sqlalchemy.sql.expression.Insert.returning
 
 
 @bp.route("/", methods=["GET"])
