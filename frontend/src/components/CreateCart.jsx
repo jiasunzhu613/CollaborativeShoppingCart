@@ -24,8 +24,8 @@ function CreateCart({ handleNewCart }) {
             })
             .then((newCart) => {
                 handleNewCart(newCart);
-                console.log("posted");
-                console.log(newCart);
+                // console.log("posted");
+                // console.log(newCart);
             });
     }
 
@@ -35,7 +35,7 @@ function CreateCart({ handleNewCart }) {
             // check if ref div contains the DOM node that triggered the event
             if (!cartCreationRef.current.contains(e.target)) {
                 handleCartCreation();
-                console.log(e.target);
+                // console.log(e.target);
             }
         };
         // add event listener
@@ -48,6 +48,7 @@ function CreateCart({ handleNewCart }) {
     }, []);
 
     function handleCartCreation() {
+        console.log("creating cart");
         let title = document.getElementById("cart_title").value;
         let desc = document.getElementById("cart_description").value;
         // both empty string, just stop expand
@@ -93,7 +94,7 @@ function CreateCart({ handleNewCart }) {
                             />
                         </div>
                         <Button
-                            onClick={handleCartCreation}
+                            onClick={() => handleCartCreation()}
                             className="mx-4 my-2 text-xs py-1 px-2"
                         >
                             Create
