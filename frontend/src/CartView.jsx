@@ -1,15 +1,15 @@
 import NavBar from "./components/NavBar";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
     Card,
     CardHeader,
     CardTitle,
     CardDescription,
-} from "@/components/ui/Card";
+} from "@/components/ui/card";
 
 function CartView() {
     let { uuid } = useParams();
