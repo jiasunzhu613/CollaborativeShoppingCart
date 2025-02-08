@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 function CreateCart({ handleNewCart }) {
     const [expand, setExpand] = useState(false); // need const for react hooks
