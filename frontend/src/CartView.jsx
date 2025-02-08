@@ -10,10 +10,15 @@ import {
     CardTitle,
     CardDescription,
 } from "@/components/ui/Card";
+import Cart from "./components/Cart";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 
 function CartView() {
     let { uuid } = useParams();
     const [items, setItems] = useState([]);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [wantToTruncate, setWantToTruncate] = useState(1);
 
     // TODO: check status, return table not found if uuid is invalid
     async function get_items() {
@@ -26,7 +31,9 @@ function CartView() {
                 return response.json();
             })
             .then((data) => {
-                setItems(data.data.cart_items);
+                setItems((items) => data.data.cart_items);
+                setTitle((title) => data.data.title);
+                setDescription((description) => data.data.description);
                 console.log(data.data.cart_items);
                 // setCartLength(data.count);
             });
@@ -70,43 +77,41 @@ function CartView() {
         if (item_name && quantity) post_item(item_name, quantity);
     }
     return (
-        <div>
+        <>
             <NavBar></NavBar>
-            {/* <Button onClick={addItem} className="m-4">
-                Add item
-            </Button>
-            <div className="m-4">
-                <Label>Item Name</Label>
-                <Input id="item_name"></Input>
-                <Label>Quantity</Label>
-                <Input id="quantity"></Input>
-            </div> */}
-            {/* Cart Item Div */}
-            {/* <div className="w-1/2">
-                {items.map((item) => (
-                    <Card className="p-4">
-                        <div className="flex flex-row items-center justify-between">
-                            <CardTitle>{item.item_name}</CardTitle>
-                            <CardDescription className="items-center">
-                                Quantity: {item.quantity}
-                            </CardDescription>
-                        </div>
-                    </Card>
-                ))}
-            </div> */}
-            <div className="h-[40em] p-2 mx-8 rounded-lg bg-pink-300 w-1/2 overflow-y-scroll">
-                {items.map((item) => (
-                    <Card className="m-2 p-4">
-                        <div className="flex flex-row items-center justify-between">
-                            <CardTitle>{item.item_name}</CardTitle>
-                            <CardDescription className="items-center">
-                                Quantity: {item.quantity}
-                            </CardDescription>
-                        </div>
-                    </Card>
-                ))}
+            <div className="mx-10">
+                <div className="w-1/2">
+                    <h1 className="font-black text-5xl mb-1">
+                        {localStorage.getItem("title")}
+                    </h1>
+                    <h2
+                        className={`font-light ${
+                            wantToTruncate ? `truncate` : ``
+                        } mb-2`}
+                        onClick={() => {
+                            setWantToTruncate((wtt) => !wtt);
+                        }}
+                    >
+                        {localStorage.getItem("description")}
+                    </h2>
+                    <hr className="bg-gray-700 mb-2"></hr>
+                    <h1 className="font-black text-3xl mb-1">ITEMS</h1>
+                    <div className="flex">
+                        <button className="py-1 px-1 border shadow-sm rounded-md mr-2">
+                            <span className="flex items-center">
+                                <ChevronDownIcon className="mx-1 size-5"></ChevronDownIcon>
+                                <h3 className="mr-2">None</h3>
+                            </span>
+                        </button>
+                        <input
+                            placeholder="Filter"
+                            className="border shadow-sm py-1 px-2 rounded-md outline-none w-full"
+                        ></input>
+                    </div>
+                </div>
+                <Cart items={items} addItem={addItem}></Cart>
             </div>
-        </div>
+        </>
     );
 }
 
