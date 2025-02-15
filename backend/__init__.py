@@ -24,7 +24,7 @@ class Base(DeclarativeBase): # remember to define as class!
 db = SQLAlchemy(model_class=Base)
 cors = CORS()
 
-
+# Function used to create the flask app, similar to if you used if __name__ == "__main__" then app.run() without the function
 def create_app():
     # Create Flask application
     app = Flask(__name__)
