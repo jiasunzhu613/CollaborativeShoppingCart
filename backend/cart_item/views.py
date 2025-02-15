@@ -1,5 +1,5 @@
 from flask import Flask, request, Blueprint, jsonify
-from sqlalchemy import insert, select, update
+from sqlalchemy import insert, select, update, delete
 from backend import db
 from ..cart_item.model import Cart_Item
 
@@ -20,7 +20,8 @@ def create_cart_item(incoming_cart_id):
             values(
                 cart_id=incoming_cart_id,
                 item_name=data.get("item_name", ""),
-                quantity=data.get("quantity", 0)
+                quantity=data.get("quantity", 0),
+                category=data.get("category", "")
             ).\
             returning(Cart_Item)
 
@@ -32,6 +33,7 @@ def create_cart_item(incoming_cart_id):
         "id": item_returned.id,
         "item_name": item_returned.item_name,
         "quantity": item_returned.quantity,
+        "category": item_returned.category,
         "cart_id": item_returned.cart_id
         }) # https://docs.sqlalchemy.org/en/20/core/dml.html#sqlalchemy.sql.expression.Insert.returning
 
@@ -43,7 +45,8 @@ def get_all_cart_items():
                 "id": item.id,
                 "cart_id": item.cart_id,
                 "item_name": item.item_name,
-                "quantity": item.quantity
+                "quantity": item.quantity,
+                "category": item.category
     } for item in items])
 
 
@@ -55,7 +58,8 @@ def get_cart_item_by_id(cart_item_id):
                 "id": item.id,
                 "cart_id": item.cart_id,
                 "item_name": item.item_name,
-                "quantity": item.quantity
+                "quantity": item.quantity,
+                "category": item.category
     })
 
 @bp.route("/<cart_item_id>", methods=["PUT"])
@@ -67,11 +71,20 @@ def update_cart_item_by_id(cart_item_id):
             where(Cart_Item.id == cart_item_id).\
             values(
                 item_name=data.get("item_name", cart_item.item_name),
-                quantity=data.get("quantity", cart_item.quantity)
+                quantity=data.get("quantity", cart_item.quantity),
+                category=data.get("category", cart_item.category)
             ).\
             returning(Cart_Item.id)
     cart_item = db.session.execute(query)
     db.session.commit()
     return jsonify({"id": cart_item.fetchone()[0]})
+
+@bp.route("/<cart_item_id>", methods=["DELETE"])
+def delete_cart_item_by_id(cart_item_id):
+    query = delete(Cart_Item).\
+            where(Cart_Item.id == cart_item_id)
+    db.session.execute(query)
+    db.session.commit()
+    return f"Delete cart item id={cart_item_id}"
 
 

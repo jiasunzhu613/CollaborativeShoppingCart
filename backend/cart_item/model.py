@@ -10,6 +10,7 @@ CartItem schema: [generate multiple of same cartitem? Or no?]
 Id: int (primary key)
 itemName: String
 Quantity: int
+category: String
 """
 class Cart_Item(db.Model):
     __tablename__ = "cart_item_table"
@@ -19,4 +20,5 @@ class Cart_Item(db.Model):
     cart: Mapped["Cart"] = relationship() # NOTE: I guess if you have a foreign key you must also have a field that holds the foreign object?
     item_name: Mapped[str] = mapped_column()
     quantity: Mapped[int] = mapped_column()
+    category: Mapped[str | None] = mapped_column() # category can be nullable
 

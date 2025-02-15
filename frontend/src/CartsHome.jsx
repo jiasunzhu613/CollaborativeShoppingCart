@@ -10,10 +10,11 @@ function CartsHome() {
     const [carts, setCarts] = useState([]); // remember to use [] state to store fetched data
     const [cartLength, setCartLength] = useState(0);
     const [loading, setLoading] = useState(0);
+    const BACKEND_URL = import.meta.env.VITE_BACKEND;
 
     // TODO: need to change this to async, await and add loading state
     async function getCarts() {
-        const URL = "http://127.0.0.1:5000/cart/";
+        const URL = `${BACKEND_URL}/cart/`;
         setLoading((loading) => 1);
         await fetch(URL, {
             method: "GET",
@@ -34,7 +35,7 @@ function CartsHome() {
     }
 
     async function delete_cart(uuid) {
-        const URL = `http://127.0.0.1:5000/cart/${uuid}`;
+        const URL = `${BACKEND_URL}/cart/${uuid}`;
         await fetch(URL, {
             method: "DELETE",
         })

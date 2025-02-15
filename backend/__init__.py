@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from dotenv import load_dotenv
 from flask_cors import CORS
+from flask_migrate import Migrate
 # from psycopg2 import 
 
 
@@ -39,6 +40,9 @@ def create_app():
         SECRET_KEY=os.environ.get("SECRET_KEY", "dev"),
         SQLALCHEMY_DATABASE_URI=db_uri, # remember to capitalize everything
     )
+
+    # Set up migration 
+    migrate = Migrate(app, db)
 
     # TODO: add config file?
 

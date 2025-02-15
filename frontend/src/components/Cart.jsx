@@ -1,28 +1,66 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { CheckIcon } from "@radix-ui/react-icons";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-function Cart({ items, addItem }) {
+function Cart({ items, addItem, deleteItem }) {
     const [wantToAddItem, setWantToAddItem] = useState(0);
+    const [category, setCategory] = useState("");
 
-    function handleAddItem() {
-        addItem();
+    function handleAddItem(category) {
+        addItem(category);
         setWantToAddItem((wtai) => 0);
+        setCategory((c) => "");
     }
+
+    function handleDeleteItem(item_id) {
+        deleteItem(item_id);
+    }
+
+    function handleCategoryChange(category) {
+        if (!category) {
+            setCategory((c) => "");
+            return;
+        }
+        setCategory((c) => category);
+    }
+
     return (
         <div className="my-2 w-1/2">
             <hr className="bg-slate-600"></hr>
             {items.map((item) => (
                 <>
                     <div className="flex justify-between my-2">
-                        <div className="flex px-2">
-                            <div className="p-2 m-1 rounded-full border shadow-sm group">
+                        <div className="flex px-2 items-center">
+                            {/* <div className="p-2 m-1 rounded-full border shadow-sm group">
                                 <CheckIcon className="absolute !p-0 !m-0 size-3 group-hover: visible"></CheckIcon>
-                            </div>
+                            </div> */}
                             {/* <div
                                 type="radio"
                                 className="p-2 m-1 rounded-full border shadow-sm hover:fill-red-600"
                             ></div> */}
+                            <button
+                                onClick={() => handleDeleteItem(item.id)}
+                                className="flex items-center justify-center rounded-full size-5 m-1 border shadow-sm group"
+                            >
+                                <CheckIcon className="size-3 invisible group-hover:visible"></CheckIcon>
+                            </button>
                             <h1 className="text-foreground">
                                 {item.item_name}{" "}
                             </h1>
@@ -49,31 +87,78 @@ function Cart({ items, addItem }) {
                             className="text-secondary-foreground font-semibold rounded-md flex-grow px-4 py-2 outline-none"
                         />
                     </div>
+                    <div className="flex">
+                        <input
+                            id="quantity"
+                            autoComplete="off"
+                            placeholder={"Quantity..."}
+                            className="text-secondary-foreground rounded-md text-sm flex-grow px-4 outline-none"
+                        />
+                    </div>
 
-                    <>
-                        <div className="flex">
-                            <input
-                                id="quantity"
-                                autoComplete="off"
-                                placeholder={"Quantity..."}
-                                className="text-secondary-foreground rounded-md text-sm flex-grow px-4 outline-none"
-                            />
-                        </div>
+                    <div className="flex">
                         <button
-                            onClick={() => handleAddItem()}
+                            onClick={() => {
+                                handleAddItem(category);
+                            }}
                             className="mx-4 my-2 text-xs py-2 px-2 bg-secondary-foreground text-white rounded-md"
                         >
                             Create
                         </button>
+
+                        {/* <DropdownMenu>
+                            <DropdownMenuTrigger className="mr-4 my-2 text-xs py-2 px-2 bg-secondary-foreground text-white rounded-md">
+                                Category
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuItem>Fruit & Veg</DropdownMenuItem>
+                                <DropdownMenuItem>Meat</DropdownMenuItem>
+                                <DropdownMenuItem>Snacks</DropdownMenuItem>
+                                <DropdownMenuItem>Grains</DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu> */}
+
+                        <Select
+                            value={category}
+                            onValueChange={(category) => {
+                                handleCategoryChange(category);
+                            }}
+                        >
+                            <SelectTrigger className="w-[12em] mr-4 my-2 text-xs py-2 px-2 bg-secondary-foreground text-white rounded-md">
+                                <SelectValue placeholder="Select a category" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectLabel>Categories</SelectLabel>
+                                    <SelectItem value="Fruit & Veg">
+                                        Fruit & Veg
+                                    </SelectItem>
+                                    <SelectItem value="Meat">Meat</SelectItem>
+                                    <SelectItem value="Snacks">
+                                        Snacks
+                                    </SelectItem>
+                                    <SelectItem value="Grains">
+                                        Grains
+                                    </SelectItem>
+                                    {category && (
+                                        <SelectItem value={undefined}>
+                                            None
+                                        </SelectItem>
+                                    )}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+
                         <button
                             onClick={() => {
+                                setCategory((c) => "");
                                 setWantToAddItem((wtai) => 0);
                             }}
                             className="my-2 text-xs py-2 px-2 bg-secondary-foreground text-white rounded-md"
                         >
                             Cancel
                         </button>
-                    </>
+                    </div>
                 </div>
             ) : (
                 <>

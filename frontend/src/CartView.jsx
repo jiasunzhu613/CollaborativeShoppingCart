@@ -11,18 +11,33 @@ import {
     CardDescription,
 } from "@/components/ui/card";
 import Cart from "./components/Cart";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
+import {
+    ChevronDownIcon,
+    ChevronUpIcon,
+    Cross2Icon,
+} from "@radix-ui/react-icons";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 
 function CartView() {
     let { uuid } = useParams();
     const [items, setItems] = useState([]);
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
+    const [categorizedItems, setCategorizedItems] = useState([]);
+    const [filteredItems, setFilteredItems] = useState([]);
     const [wantToTruncate, setWantToTruncate] = useState(1);
+    const [category, setCategory] = useState("");
+    const BACKEND_URL = import.meta.env.VITE_BACKEND;
 
     // TODO: check status, return table not found if uuid is invalid
     async function get_items() {
-        const URL = `http://127.0.0.1:5000/cart/${uuid}`;
+        const URL = `${BACKEND_URL}/cart/${uuid}`;
 
         await fetch(URL, {
             method: "GET",
@@ -32,18 +47,19 @@ function CartView() {
             })
             .then((data) => {
                 setItems((items) => data.data.cart_items);
-                setTitle((title) => data.data.title);
-                setDescription((description) => data.data.description);
+                setCategorizedItems((categorizedItems) => data.data.cart_items);
+                setFilteredItems((filteredItems) => data.data.cart_items);
                 console.log(data.data.cart_items);
                 // setCartLength(data.count);
             });
     }
 
-    async function post_item(item_name, quantity) {
-        const URL = `http://127.0.0.1:5000/cart_item/${uuid}`;
+    async function post_item(item_name, quantity, category) {
+        const URL = `${BACKEND_URL}/cart_item/${uuid}`;
         const content = {
             item_name: item_name,
             quantity: quantity,
+            category: category,
         };
 
         await fetch(URL, {
@@ -59,23 +75,85 @@ function CartView() {
                 return response.json();
             })
             .then((data) => {
-                setItems((items) => [...items, data]);
+                const new_items = [...items, data];
+                setItems((items) => new_items);
+                setCategorizedItems((categorizedItems) => new_items);
+                setFilteredItems((filteredItems) => new_items);
                 console.log(data);
             });
         document.getElementById("item_name").value = "";
         document.getElementById("quantity").value = "";
     }
 
+    async function delete_item(item_id) {
+        const URL = `${BACKEND_URL}/cart_item/${item_id}`;
+        await fetch(URL, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+            });
+    }
+
     useEffect(() => {
         get_items();
     }, []);
 
-    function addItem() {
+    function addItem(category) {
         let item_name = document.getElementById("item_name").value;
         let quantity = document.getElementById("quantity").value;
 
-        if (item_name && quantity) post_item(item_name, quantity);
+        if (item_name && quantity) post_item(item_name, quantity, category);
     }
+
+    function deleteItem(item_id) {
+        // const new_items = items.filter((item) => item.id != item_id);
+        setItems((items) => items.filter((item) => item.id != item_id));
+        setCategorizedItems((categorizedItems) =>
+            categorizedItems.filter((item) => item.id != item_id)
+        );
+        setFilteredItems((filteredItems) =>
+            filteredItems.filter((item) => item.id != item_id)
+        );
+        delete_item(item_id);
+    }
+
+    function filterByCategory(category) {
+        document.getElementById("filter").value = "";
+        if (!category) {
+            setCategorizedItems((categorizedItems) => items);
+            setFilteredItems((filteredItems) => items);
+            setCategory((c) => "");
+            return;
+        }
+        const categorized_items = items.filter(
+            (item) => item.category === category
+        );
+        setCategorizedItems((categorizedItems) => categorized_items);
+        setFilteredItems((filteredItems) => categorized_items);
+        setCategory((c) => category);
+        console.log(categorizedItems);
+    }
+
+    function filterByString() {
+        let string = document.getElementById("filter").value;
+        if (!string) {
+            setFilteredItems((filteredItems) => categorizedItems);
+            console.log(filteredItems);
+            return;
+        }
+        const filtered_items = categorizedItems.filter((item) =>
+            item.item_name.includes(string)
+        );
+        setFilteredItems((filteredItems) => filtered_items);
+    }
+
     return (
         <>
             <NavBar></NavBar>
@@ -85,7 +163,7 @@ function CartView() {
                         {localStorage.getItem("title")}
                     </h1>
                     <h2
-                        className={`font-light ${
+                        className={`font-light break-words ${
                             wantToTruncate ? `truncate` : ``
                         } mb-2`}
                         onClick={() => {
@@ -97,19 +175,51 @@ function CartView() {
                     <hr className="bg-gray-700 mb-2"></hr>
                     <h1 className="font-black text-3xl mb-1">ITEMS</h1>
                     <div className="flex">
-                        <button className="py-1 px-1 border shadow-sm rounded-md mr-2">
-                            <span className="flex items-center">
-                                <ChevronDownIcon className="mx-1 size-5"></ChevronDownIcon>
-                                <h3 className="mr-2">None</h3>
-                            </span>
-                        </button>
+                        <Select
+                            value={category}
+                            onValueChange={(category) => {
+                                console.log(category);
+                                filterByCategory(category);
+                            }}
+                        >
+                            <SelectTrigger className="border shadow-sm rounded-md mr-2 w-[30%]">
+                                <SelectValue placeholder="Select a Category" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectLabel>Categories</SelectLabel>
+                                    <SelectItem value="Fruit & Veg">
+                                        Fruit & Veg
+                                    </SelectItem>
+                                    <SelectItem value="Meat">Meat</SelectItem>
+                                    <SelectItem value="Snacks">
+                                        Snacks
+                                    </SelectItem>
+                                    <SelectItem value="Grains">
+                                        Grains
+                                    </SelectItem>
+                                    {category && (
+                                        <SelectItem value={undefined}>
+                                            None
+                                        </SelectItem>
+                                    )}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+
                         <input
+                            id="filter"
                             placeholder="Filter"
                             className="border shadow-sm py-1 px-2 rounded-md outline-none w-full"
+                            onChange={() => filterByString()}
                         ></input>
                     </div>
                 </div>
-                <Cart items={items} addItem={addItem}></Cart>
+                <Cart
+                    items={filteredItems}
+                    addItem={addItem}
+                    deleteItem={deleteItem}
+                ></Cart>
             </div>
         </>
     );
