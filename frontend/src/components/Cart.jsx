@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { CheckIcon } from "@radix-ui/react-icons";
 import {
     Select,
@@ -10,14 +9,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 function Cart({ items, addItem, deleteItem }) {
     const [wantToAddItem, setWantToAddItem] = useState(0);
@@ -25,8 +16,8 @@ function Cart({ items, addItem, deleteItem }) {
 
     function handleAddItem(category) {
         addItem(category);
-        setWantToAddItem((wtai) => 0);
-        setCategory((c) => "");
+        setWantToAddItem(() => 0);
+        setCategory(() => "");
     }
 
     function handleDeleteItem(item_id) {
@@ -35,10 +26,10 @@ function Cart({ items, addItem, deleteItem }) {
 
     function handleCategoryChange(category) {
         if (!category) {
-            setCategory((c) => "");
+            setCategory(() => "");
             return;
         }
-        setCategory((c) => category);
+        setCategory(() => category);
     }
 
     return (
@@ -151,8 +142,8 @@ function Cart({ items, addItem, deleteItem }) {
 
                         <button
                             onClick={() => {
-                                setCategory((c) => "");
-                                setWantToAddItem((wtai) => 0);
+                                setCategory(() => "");
+                                setWantToAddItem(() => 0);
                             }}
                             className="my-2 text-xs py-2 px-2 bg-secondary-foreground text-white rounded-md"
                         >
@@ -169,7 +160,7 @@ function Cart({ items, addItem, deleteItem }) {
                             <a
                                 className="text-foreground hover:underline cursor-pointer"
                                 onClick={() => {
-                                    setWantToAddItem((wtai) => 1);
+                                    setWantToAddItem(() => 1);
                                 }}
                             >
                                 <span className="opacity-50">Add item</span>
