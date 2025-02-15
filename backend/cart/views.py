@@ -64,7 +64,8 @@ def get_cart_by_id(cart_id):
     cart_items = [{
         "id": item.id,
         "item_name": item.item_name,
-        "quantity": item.quantity
+        "quantity": item.quantity,
+        "category": item.category
     } for item in items]
     return jsonify({"data" : {
                 "id": cart.id,

@@ -4,11 +4,12 @@ import { Button } from "@/components/ui/button";
 function CreateCart({ handleNewCart }) {
     const [expand, setExpand] = useState(false); // need const for react hooks
     const cartCreationRef = useRef(); // ref that will point to our cart creation div
+    const BACKEND_URL = import.meta.env.VITE_BACKEND;
 
     // TODO: brings pop up down that maybe says something like "CREATED"
     // TODO: perform empty checks
     function postCart(data) {
-        const URL = "http://127.0.0.1:5000/cart/";
+        const URL = `${BACKEND_URL}/cart/`;
         console.log(document.getElementById("cart_title"));
         fetch(URL, {
             method: "POST",
