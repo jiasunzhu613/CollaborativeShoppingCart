@@ -1,26 +1,25 @@
-import { useState, useEffect } from "react";
+// import { useState } from "react";
 import {
     Card,
-    CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
 import { TrashIcon } from "@radix-ui/react-icons";
-import { Reorder } from "motion/react";
-import { Link, useNavigate } from "react-router";
+// import { Reorder } from "motion/react";
+import { Link } from "react-router";
 
 function Carts({ carts, cartLength, loading, handleDelete }) {
-    const [items, setItems] = useState([0, 1, 2, 3]); // was used for framer motion stuff
-    let navigate = useNavigate();
+    // const [items, setItems] = useState([0, 1, 2, 3]); // was used for framer motion stuff
 
-    function handleCartClick(cart) {
-        localStorage.setItem("title", cart.title);
-        localStorage.setItem("description", cart.description);
-        navigate(`/cart/${cart.id}`);
-        console.log("clicked on cart");
-    }
+    // TODO: fix navigation
+    // let navigate = useNavigate();
+    // function handleCartClick(cart) {
+    //     localStorage.setItem("title", cart.title);
+    //     localStorage.setItem("description", cart.description);
+    //     navigate(`/cart/${cart.id}`);
+    //     console.log("clicked on cart");
+    // }
 
     if (loading)
         return (
@@ -38,7 +37,7 @@ function Carts({ carts, cartLength, loading, handleDelete }) {
             {cartLength > 0 ? (
                 <div className="flex flex-wrap justify-evenly">
                     {carts.map((cart) => (
-                        <Card className="w-[20rem] m-4">
+                        <Card key={cart.id} className="w-[20rem] m-4">
                             <Link
                                 to={`/cart/${cart.id}`}
                                 onClick={() => {

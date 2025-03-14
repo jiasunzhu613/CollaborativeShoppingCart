@@ -4,7 +4,7 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "vite",
+        "dev": "npm i && vite",
         "build": "vite build",
         "lint": "eslint .",
         "preview": "vite preview"
@@ -20,9 +20,11 @@
         "dotenv": "^16.4.7",
         "lucide-react": "^0.473.0",
         "motion": "^11.18.1",
+        "prop-types": "^15.8.1",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-router": "^7.1.3",
+        "selenium-webdriver": "^4.28.1",
         "tailwind-merge": "^2.6.0",
         "tailwindcss-animate": "^1.0.7"
     },
@@ -38,6 +40,7 @@
         "eslint-plugin-react-hooks": "^5.0.0",
         "eslint-plugin-react-refresh": "^0.4.16",
         "globals": "^15.14.0",
+        "mocha": "11.1.0",
         "postcss": "^8.4.49",
         "tailwindcss": "^3.4.17",
         "vite": "^6.0.5"

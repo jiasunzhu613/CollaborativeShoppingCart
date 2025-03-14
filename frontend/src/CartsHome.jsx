@@ -15,7 +15,7 @@ function CartsHome() {
     // TODO: need to change this to async, await and add loading state
     async function getCarts() {
         const URL = `${BACKEND_URL}/cart/`;
-        setLoading((loading) => 1);
+        setLoading(() => 1);
         await fetch(URL, {
             method: "GET",
         })
@@ -31,7 +31,7 @@ function CartsHome() {
                 localStorage.setItem("carts", JSON.stringify(data.data)); // store list of json data as a string in localstorage
                 localStorage.setItem("cartLength", data.count);
             });
-        setLoading((loading) => 0);
+        setLoading(() => 0);
     }
 
     async function delete_cart(uuid) {

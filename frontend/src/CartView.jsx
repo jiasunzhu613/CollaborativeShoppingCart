@@ -1,21 +1,7 @@
 import NavBar from "./components/NavBar";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-    Card,
-    CardHeader,
-    CardTitle,
-    CardDescription,
-} from "@/components/ui/card";
 import Cart from "./components/Cart";
-import {
-    ChevronDownIcon,
-    ChevronUpIcon,
-    Cross2Icon,
-} from "@radix-ui/react-icons";
 import {
     Select,
     SelectContent,
@@ -25,6 +11,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { ChatBubbleIcon } from "@radix-ui/react-icons";
 
 function CartView() {
     let { uuid } = useParams();
@@ -33,6 +20,7 @@ function CartView() {
     const [filteredItems, setFilteredItems] = useState([]);
     const [wantToTruncate, setWantToTruncate] = useState(1);
     const [category, setCategory] = useState("");
+    const [recipeDisplay, setRecipeDisplay] = useState(0);
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
 
     // TODO: check status, return table not found if uuid is invalid
@@ -46,9 +34,9 @@ function CartView() {
                 return response.json();
             })
             .then((data) => {
-                setItems((items) => data.data.cart_items);
-                setCategorizedItems((categorizedItems) => data.data.cart_items);
-                setFilteredItems((filteredItems) => data.data.cart_items);
+                setItems(() => data.data.cart_items);
+                setCategorizedItems(() => data.data.cart_items);
+                setFilteredItems(() => data.data.cart_items);
                 console.log(data.data.cart_items);
                 // setCartLength(data.count);
             });
@@ -76,9 +64,9 @@ function CartView() {
             })
             .then((data) => {
                 const new_items = [...items, data];
-                setItems((items) => new_items);
-                setCategorizedItems((categorizedItems) => new_items);
-                setFilteredItems((filteredItems) => new_items);
+                setItems(() => new_items);
+                setCategorizedItems(() => new_items);
+                setFilteredItems(() => new_items);
                 console.log(data);
             });
         document.getElementById("item_name").value = "";
@@ -127,31 +115,31 @@ function CartView() {
     function filterByCategory(category) {
         document.getElementById("filter").value = "";
         if (!category) {
-            setCategorizedItems((categorizedItems) => items);
-            setFilteredItems((filteredItems) => items);
-            setCategory((c) => "");
+            setCategorizedItems(() => items);
+            setFilteredItems(() => items);
+            setCategory(() => "");
             return;
         }
         const categorized_items = items.filter(
             (item) => item.category === category
         );
-        setCategorizedItems((categorizedItems) => categorized_items);
-        setFilteredItems((filteredItems) => categorized_items);
-        setCategory((c) => category);
+        setCategorizedItems(() => categorized_items);
+        setFilteredItems(() => categorized_items);
+        setCategory(() => category);
         console.log(categorizedItems);
     }
 
     function filterByString() {
         let string = document.getElementById("filter").value;
         if (!string) {
-            setFilteredItems((filteredItems) => categorizedItems);
+            setFilteredItems(() => categorizedItems);
             console.log(filteredItems);
             return;
         }
         const filtered_items = categorizedItems.filter((item) =>
             item.item_name.includes(string)
         );
-        setFilteredItems((filteredItems) => filtered_items);
+        setFilteredItems(() => filtered_items);
     }
 
     return (
@@ -198,6 +186,7 @@ function CartView() {
                                     <SelectItem value="Grains">
                                         Grains
                                     </SelectItem>
+                                    <SelectItem value="Other">Other</SelectItem>
                                     {category && (
                                         <SelectItem value={undefined}>
                                             None
@@ -213,6 +202,27 @@ function CartView() {
                             className="border shadow-sm py-1 px-2 rounded-md outline-none w-full"
                             onChange={() => filterByString()}
                         ></input>
+                        <div className="flex-col">
+                            <button
+                                id="chat-button"
+                                className="p-1 m-1 border shadow-sm rounded-full"
+                                onClick={() =>
+                                    setRecipeDisplay((recipe) => !recipe)
+                                }
+                            >
+                                <ChatBubbleIcon className="m-1" />
+                            </button>
+                            {recipeDisplay ? (
+                                <div className="absolute float border shadow-sm bg-white rounded-lg p-2">
+                                    <h3>Want to try a new recipe?</h3>
+                                    <input
+                                        id="recipe"
+                                        placeholder="Recipe"
+                                        className="border shadow-sm py-1 px-2 rounded-md outline-none w-full"
+                                    ></input>
+                                </div>
+                            ) : null}
+                        </div>
                     </div>
                 </div>
                 <Cart
