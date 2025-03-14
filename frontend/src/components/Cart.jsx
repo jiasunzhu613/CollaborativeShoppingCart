@@ -131,6 +131,7 @@ function Cart({ items, addItem, deleteItem }) {
                                     <SelectItem value="Grains">
                                         Grains
                                     </SelectItem>
+                                    <SelectItem value="Other">Other</SelectItem>
                                     {category && (
                                         <SelectItem value={undefined}>
                                             None

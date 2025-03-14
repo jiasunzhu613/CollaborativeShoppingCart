@@ -1,34 +1,49 @@
 services:
+    # Uncomment if testing postgres db locally
+    # db:
+    #   image: postgres:17
+    #   restart: always
+    #   environment:
+    #     POSTGRES_USER: user
+    #     POSTGRES_PASSWORD: secret
+    #     POSTGRES_DB: postgres
+    #   volumes:
+    #     - pgdata:/var/lib/postgresql/data
 
-  # Uncomment if testing postgres db locally
-  # db:
-  #   image: postgres:17
-  #   restart: always
-  #   environment:
-  #     POSTGRES_USER: user
-  #     POSTGRES_PASSWORD: secret
-  #     POSTGRES_DB: postgres
-  #   volumes:
-  #     - pgdata:/var/lib/postgresql/data
+    backend:
+        build:
+            context: backend
+            # target: development
+        develop:
+            watch:
+                - action: sync
+                  path: /backend
+                  target: /backend
+                  ignore:
+                      - env/
+                      - __pycache__/
+        ports:
+            - 8080:8080
 
-  backend: 
-    build: 
-      context: backend
-      # target: development
-    ports: 
-      - 8080:8080
-
-  frontend: 
-    build: 
-      context: frontend
-      # target: development
-    command: npm run dev
-    ports: 
-      - 3000:3000
+    frontend:
+        build:
+            context: frontend
+            # target: development
+        develop:
+            watch:
+                - action: sync
+                  path: /frontend
+                  target: /frontend
+                  ignore:
+                      - node_modules/
+                - action: rebuild
+                  path: package.json
+        ports:
+            - 3000:3000
 
 secrets:
-  env:
-    file: /backend/.env
+    env:
+        file: /backend/.env
 
 volumes:
-  pgdata:
+    pgdata:

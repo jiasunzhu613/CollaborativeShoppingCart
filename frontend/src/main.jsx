@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import "./index.css";
 import CartsHome from "./CartsHome.jsx";
 import CartView from "./CartView.jsx";
+import SignUp from "./SignUp.jsx";
+import SignIn from "./SignIn.jsx";
 
 // note for react router: index simply points to the "/" path
 createRoot(document.getElementById("root")).render(
@@ -10,6 +12,8 @@ createRoot(document.getElementById("root")).render(
         <Routes>
             <Route index element={<CartsHome />}></Route>
             <Route path="cart/:uuid" element={<CartView />}></Route>
+            <Route path="sign-up" element={<SignUp />}></Route>
+            <Route path="sign-in" element={<SignIn />}></Route>
         </Routes>
     </BrowserRouter>
     // <StrictMode>

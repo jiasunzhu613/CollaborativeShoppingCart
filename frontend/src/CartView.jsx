@@ -11,6 +11,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { ChatBubbleIcon } from "@radix-ui/react-icons";
 
 function CartView() {
     let { uuid } = useParams();
@@ -19,6 +20,7 @@ function CartView() {
     const [filteredItems, setFilteredItems] = useState([]);
     const [wantToTruncate, setWantToTruncate] = useState(1);
     const [category, setCategory] = useState("");
+    const [recipeDisplay, setRecipeDisplay] = useState(0);
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
 
     // TODO: check status, return table not found if uuid is invalid
@@ -184,6 +186,7 @@ function CartView() {
                                     <SelectItem value="Grains">
                                         Grains
                                     </SelectItem>
+                                    <SelectItem value="Other">Other</SelectItem>
                                     {category && (
                                         <SelectItem value={undefined}>
                                             None
@@ -199,6 +202,27 @@ function CartView() {
                             className="border shadow-sm py-1 px-2 rounded-md outline-none w-full"
                             onChange={() => filterByString()}
                         ></input>
+                        <div className="flex-col">
+                            <button
+                                id="chat-button"
+                                className="p-1 m-1 border shadow-sm rounded-full"
+                                onClick={() =>
+                                    setRecipeDisplay((recipe) => !recipe)
+                                }
+                            >
+                                <ChatBubbleIcon className="m-1" />
+                            </button>
+                            {recipeDisplay ? (
+                                <div className="absolute float border shadow-sm bg-white rounded-lg p-2">
+                                    <h3>Want to try a new recipe?</h3>
+                                    <input
+                                        id="recipe"
+                                        placeholder="Recipe"
+                                        className="border shadow-sm py-1 px-2 rounded-md outline-none w-full"
+                                    ></input>
+                                </div>
+                            ) : null}
+                        </div>
                     </div>
                 </div>
                 <Cart

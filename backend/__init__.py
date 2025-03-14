@@ -10,6 +10,8 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 # from psycopg2 import 
 
+from google import genai
+
 
 # Load .env file
 load_dotenv()
@@ -23,6 +25,10 @@ class Base(DeclarativeBase): # remember to define as class!
 # Create SQL db model that will load a db engine
 db = SQLAlchemy(model_class=Base)
 cors = CORS()
+
+# Initialize Gemini instance
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+client = genai.Client(api_key=GEMINI_API_KEY)
 
 # Function used to create the flask app, similar to if you used if __name__ == "__main__" then app.run() without the function
 def create_app():
@@ -54,10 +60,11 @@ def create_app():
     cors.init_app(app, origins=["http://localhost:*"])
 
     # Register blueprints
-    from backend import cart, cart_item, user
+    from backend import cart, cart_item, user, chatbot
     app.register_blueprint(cart.bp, url_prefix="/cart")
     app.register_blueprint(cart_item.bp, url_prefix="/cart_item")
     # app.register_blueprint(user.bp, url_prefix="/user")
+    app.register_blueprint(chatbot.bp, url_prefix="/chatbot")
 
     return app
 
