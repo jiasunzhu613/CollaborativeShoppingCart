@@ -8,7 +8,8 @@ from sqlalchemy.orm import DeclarativeBase
 from dotenv import load_dotenv
 from flask_cors import CORS
 from flask_migrate import Migrate
-# from psycopg2 import 
+
+# from psycopg2 import
 
 from google import genai
 
@@ -18,7 +19,7 @@ load_dotenv()
 
 
 # Create base model
-class Base(DeclarativeBase): # remember to define as class! 
+class Base(DeclarativeBase):  # remember to define as class!
     pass
 
 
@@ -41,28 +42,30 @@ def create_app():
     #     # default to a sqlite database in the instance folder
     #     db_url = "sqlite:///backend.db"
 
-    # Configure SQlalchemy db 
+    # Configure SQlalchemy db
     app.config.from_mapping(
         SECRET_KEY=os.environ.get("SECRET_KEY", "dev"),
-        SQLALCHEMY_DATABASE_URI=db_uri, # remember to capitalize everything
+        SQLALCHEMY_DATABASE_URI=db_uri,  # remember to capitalize everything
     )
 
-    # Set up migration 
+    # Set up migration
     migrate = Migrate(app, db)
 
     # TODO: add config file?
 
     # Initialize Flask-SQLalchemy and database
     db.init_app(app)
-    app.cli.add_command(init_db_command) 
+    app.cli.add_command(init_db_command)
 
-    # Initialize CORS 
+    # Initialize CORS
     cors.init_app(app, origins=["http://localhost:*"])
 
     # Register blueprints
+
     from backend import cart, cart_item, user, chatbot
     app.register_blueprint(cart.bp, url_prefix="/cart")
     app.register_blueprint(cart_item.bp, url_prefix="/cart_item")
+    app.register_blueprint(user.bp, url_prefix="/user")
     # app.register_blueprint(user.bp, url_prefix="/user")
     app.register_blueprint(chatbot.bp, url_prefix="/chatbot")
 
@@ -70,7 +73,7 @@ def create_app():
 
 
 def init_db():
-    db.drop_all() # TODO: need to delete later
+    db.drop_all()  # TODO: need to delete later
     db.create_all()
 
 
@@ -80,12 +83,3 @@ def init_db_command():
     """Clear existing data and create new tables."""
     init_db()
     click.echo("Initialized the database.")
-
-
-
-
-
-
-
-
-
