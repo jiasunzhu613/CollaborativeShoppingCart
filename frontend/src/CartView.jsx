@@ -1,5 +1,5 @@
 import NavBar from "./components/NavBar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
 import Cart from "./components/Cart";
 import {
@@ -12,9 +12,11 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
+import AuthContext from "./context/AuthProvider";
 
 function CartView() {
     let { uuid } = useParams();
+    const { auth } = useContext(AuthContext);
     const [items, setItems] = useState([]);
     const [categorizedItems, setCategorizedItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
@@ -48,6 +50,7 @@ function CartView() {
             item_name: item_name,
             quantity: quantity,
             category: category,
+            // creator: auth.user_id,
         };
 
         await fetch(URL, {

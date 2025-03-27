@@ -3,16 +3,39 @@ import { Button } from "@/components/ui/button";
 
 function CreateCart({ handleNewCart }) {
     const [expand, setExpand] = useState(false); // need const for react hooks
+    const [cartName, setCartName] = useState("");
+    const [cartDesc, setCartDesc] = useState("");
     const cartCreationRef = useRef(); // ref that will point to our cart creation div
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
 
     // TODO: brings pop up down that maybe says something like "CREATED"
     // TODO: perform empty checks
+
+    function handleCartCreation() {
+        console.log("creating cart");
+        // let title = document.getElementById("cart_title").value;
+        // let desc = document.getElementById("cart_description").value;
+        // both empty string, just stop expand
+        if (!cartName && !cartDesc) {
+            setExpand(false);
+            return;
+        }
+        if (cartName) {
+            postCart({ title: cartName, description: cartDesc });
+            // document.getElementById("cart_title").value = "";
+            // document.getElementById("cart_description").value = "";
+            setCartName(() => "");
+            setCartDesc(() => "");
+            setExpand(false);
+            // if a mouse down event happens outside of the cart creation div, we want to stop expanding
+        } else if (cartDesc) alert("need title");
+    }
+
     function postCart(data) {
         const URL = `${BACKEND_URL}/cart/`;
-        console.log(document.getElementById("cart_title"));
         fetch(URL, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -34,6 +57,7 @@ function CreateCart({ handleNewCart }) {
         // Create event handler to check if mousedown events happen outside of the cart creation div
         let handler = (e) => {
             // check if ref div contains the DOM node that triggered the event
+            // e.preventDefault();
             if (!cartCreationRef.current.contains(e.target)) {
                 handleCartCreation();
                 // console.log(e.target);
@@ -46,25 +70,7 @@ function CreateCart({ handleNewCart }) {
         return () => {
             document.removeEventListener("mousedown", handler);
         };
-    }, []);
-
-    function handleCartCreation() {
-        console.log("creating cart");
-        let title = document.getElementById("cart_title").value;
-        let desc = document.getElementById("cart_description").value;
-        // both empty string, just stop expand
-        if (!title && !desc) {
-            setExpand(false);
-            return;
-        }
-        if (title) {
-            postCart({ title: title, description: desc });
-            document.getElementById("cart_title").value = "";
-            document.getElementById("cart_description").value = "";
-            setExpand(false);
-            // if a mouse down event happens outside of the cart creation div, we want to stop expanding
-        } else if (desc) alert("need title");
-    }
+    }, [cartDesc, cartName]);
 
     return (
         <div className="flex items-center justify-center">
@@ -81,6 +87,8 @@ function CreateCart({ handleNewCart }) {
                         autoComplete="off"
                         placeholder={"Make New Shopping Cart..."}
                         className="text-secondary-foreground font-semibold rounded-md flex-grow px-4 py-2 outline-none"
+                        value={cartName}
+                        onChange={(e) => setCartName(e.target.value)}
                     />
                 </div>
 
@@ -92,6 +100,8 @@ function CreateCart({ handleNewCart }) {
                                 autoComplete="off"
                                 placeholder={"Cart Description.."}
                                 className="text-secondary-foreground rounded-md text-sm flex-grow px-4 py-2 outline-none"
+                                value={cartDesc}
+                                onChange={(e) => setCartDesc(e.target.value)}
                             />
                         </div>
                         <Button

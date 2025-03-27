@@ -4,6 +4,7 @@ from .prompt import create_prompt
 import json 
 import requests
 from requests import HTTPError
+from backend import BACKEND_URL
 
 bp = Blueprint("chatbot", __name__)
 
@@ -40,7 +41,7 @@ def post_chatbot_response():
         }
         # surround with try except
         try:
-            requests.post(f"http://127.0.0.1:8080/cart_item/{cart_id}", headers=headers, data=json.dumps(cart_item_post_data))
+            requests.post(f"{BACKEND_URL}/cart_item/{cart_id}", headers=headers, data=json.dumps(cart_item_post_data))
         except HTTPError as err:
             return jsonify(err)
         

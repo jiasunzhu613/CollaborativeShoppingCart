@@ -8,6 +8,7 @@ from sqlalchemy.orm import DeclarativeBase
 from dotenv import load_dotenv
 from flask_cors import CORS
 from flask_migrate import Migrate
+# from flask_bcrypt import Bcrypt
 
 # from psycopg2 import
 
@@ -30,12 +31,12 @@ cors = CORS()
 # Initialize Gemini instance
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 client = genai.Client(api_key=GEMINI_API_KEY)
+BACKEND_URL = os.getenv("BACKEND_URL")
 
 # Function used to create the flask app, similar to if you used if __name__ == "__main__" then app.run() without the function
 def create_app():
     # Create Flask application
     app = Flask(__name__)
-
     db_uri = os.getenv("DATABASE_URI")
 
     # if db_url is None:
@@ -58,24 +59,26 @@ def create_app():
     app.cli.add_command(init_db_command)
 
     # Initialize CORS
-    cors.init_app(app, origins=["http://localhost:*"])
+    cors.init_app(app, origins=["http://localhost:3000"], supports_credentials=True)
 
     # Register blueprints
 
-    from backend import cart, cart_item, user, chatbot
+    from backend import cart, cart_item, user, chatbot, sessionID
     app.register_blueprint(cart.bp, url_prefix="/cart")
     app.register_blueprint(cart_item.bp, url_prefix="/cart_item")
     app.register_blueprint(user.bp, url_prefix="/user")
-    # app.register_blueprint(user.bp, url_prefix="/user")
+    app.register_blueprint(sessionID.bp, url_prefix="/session")
     app.register_blueprint(chatbot.bp, url_prefix="/chatbot")
 
     return app
 
 
 def init_db():
-    db.drop_all()  # TODO: need to delete later
+    # db.drop_all()  # TODO: need to delete later
     db.create_all()
 
+# def init_session_id():
+#     db.create_all()
 
 @click.command("init-db")
 @with_appcontext

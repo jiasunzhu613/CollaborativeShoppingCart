@@ -20,12 +20,14 @@ def get_time_now():
 @bp.route("/", methods=["POST"])
 def create_cart():
     data = request.json
-    # query = 
+    creator = request.cookies.get("user_id")
+    print("the creator is:", creator)
+
     cart = db.session.execute(insert(Cart).values(
         title=data.get("title", None),
         description=data.get("description", None),
         date_created=get_time_now(),
-        creator=data.get("creator", None),
+        creator=creator,
         users=""
         ).\
         returning(Cart))
@@ -44,7 +46,9 @@ def create_cart():
 
 @bp.route("/", methods=["GET"])
 def get_all_carts():
-    carts = db.session.scalars(select(Cart).order_by(Cart.date_created.desc())).all() # returns all carts sorted by descending date created
+    user_id = request.cookies.get("user_id")
+    carts = db.session.scalars(select(Cart).where(Cart.creator == user_id).order_by(Cart.date_created.desc())).all() # returns all carts sorted by descending date created
+    print(len(carts))
     return jsonify(
         {"count": len(carts),
             "data" : [{

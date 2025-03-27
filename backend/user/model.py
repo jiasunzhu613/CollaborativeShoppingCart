@@ -28,7 +28,7 @@ class User(db.Model):
     first_name: Mapped[str] = mapped_column()
     last_name: Mapped[str] = mapped_column()
     dob: Mapped[datetime] = mapped_column(DateTime)
-    password_hash: Mapped[str] = mapped_column()
+    password_hash: Mapped[bytes] = mapped_column()
     time_stamp_earliest_valid_token: Mapped[int | None] = mapped_column()
 
     carts_created: Mapped[List["Cart"] | None] = (

@@ -1,4 +1,3 @@
-// import { useState } from "react";
 import {
     Card,
     CardDescription,
@@ -37,35 +36,40 @@ function Carts({ carts, cartLength, loading, handleDelete }) {
             {cartLength > 0 ? (
                 <div className="flex flex-wrap justify-evenly">
                     {carts.map((cart) => (
-                        <Card key={cart.id} className="w-[20rem] m-4">
-                            <Link
-                                to={`/cart/${cart.id}`}
-                                onClick={() => {
-                                    localStorage.setItem("title", cart.title);
-                                    localStorage.setItem(
-                                        "description",
-                                        cart.description
-                                    );
-                                }}
-                            >
-                                <CardHeader>
-                                    <CardTitle>{cart.title}</CardTitle>
-                                    <CardDescription className="h-[1.5em] truncate">
-                                        {cart.description}
-                                    </CardDescription>
-                                </CardHeader>
-                            </Link>
-                            <button
-                                onClick={() => handleDelete(cart.id)}
-                                className="m-1 p-2 border rounded-full shadow-sm"
-                            >
-                                <TrashIcon />
-                            </button>
-                        </Card>
+                        <div key={cart.id} className="m-4">
+                            <Card className="w-[20rem]">
+                                <Link
+                                    to={`/cart/${cart.id}`}
+                                    onClick={() => {
+                                        localStorage.setItem(
+                                            "title",
+                                            cart.title
+                                        );
+                                        localStorage.setItem(
+                                            "description",
+                                            cart.description
+                                        );
+                                    }}
+                                >
+                                    <CardHeader>
+                                        <CardTitle>{cart.title}</CardTitle>
+                                        <CardDescription className="h-[1.5em] truncate">
+                                            {cart.description}
+                                        </CardDescription>
+                                    </CardHeader>
+                                </Link>
+                                <button
+                                    onClick={() => handleDelete(cart.id)}
+                                    className="m-1 p-2 border rounded-full shadow-sm"
+                                >
+                                    <TrashIcon />
+                                </button>
+                            </Card>
+                        </div>
                     ))}
                 </div>
             ) : (
-                <div className="flex items-center">
+                <div className="flex items-center justify-center">
                     <h1 className="text-2xl text-secondary-foreground font-bold">
                         No carts created...
                     </h1>
