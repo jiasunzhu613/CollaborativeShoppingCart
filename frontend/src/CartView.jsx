@@ -1,6 +1,6 @@
 import NavBar from "./components/NavBar";
 import { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import Cart from "./components/Cart";
 import {
     Select,
@@ -24,25 +24,9 @@ function CartView() {
     const [category, setCategory] = useState("");
     const [recipeDisplay, setRecipeDisplay] = useState(0);
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
+    const navigate = useNavigate();
 
     // TODO: check status, return table not found if uuid is invalid
-    async function get_items() {
-        const URL = `${BACKEND_URL}/cart/${uuid}`;
-
-        await fetch(URL, {
-            method: "GET",
-        })
-            .then((response) => {
-                return response.json();
-            })
-            .then((data) => {
-                setItems(() => data.data.cart_items);
-                setCategorizedItems(() => data.data.cart_items);
-                setFilteredItems(() => data.data.cart_items);
-                console.log(data.data.cart_items);
-                // setCartLength(data.count);
-            });
-    }
 
     async function post_item(item_name, quantity, category) {
         const URL = `${BACKEND_URL}/cart_item/${uuid}`;
@@ -93,8 +77,50 @@ function CartView() {
     }
 
     useEffect(() => {
+        async function verify_cart() {
+            const URL = `${BACKEND_URL}/cart/${uuid}`;
+
+            await fetch(URL, {
+                method: "GET",
+            })
+                .catch((error) => {
+                    console.log(error);
+                    navigate("/404");
+                })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    setItems(() => data.data.cart_items);
+                    setCategorizedItems(() => data.data.cart_items);
+                    setFilteredItems(() => data.data.cart_items);
+                    console.log(data.data.cart_items);
+                    // setCartLength(data.count);
+                });
+        }
+        async function get_items() {
+            const URL = `${BACKEND_URL}/cart/${uuid}`;
+
+            await fetch(URL, {
+                method: "GET",
+            })
+                .catch((error) => {
+                    console.log(error);
+                    navigate("/404");
+                })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    setItems(() => data.data.cart_items);
+                    setCategorizedItems(() => data.data.cart_items);
+                    setFilteredItems(() => data.data.cart_items);
+                    console.log(data.data.cart_items);
+                    // setCartLength(data.count);
+                });
+        }
         get_items();
-    }, []);
+    }, [BACKEND_URL, navigate, uuid]);
 
     function addItem(category) {
         let item_name = document.getElementById("item_name").value;
@@ -144,7 +170,7 @@ function CartView() {
         );
         setFilteredItems(() => filtered_items);
     }
-
+    console.log(items);
     return (
         <>
             <NavBar></NavBar>

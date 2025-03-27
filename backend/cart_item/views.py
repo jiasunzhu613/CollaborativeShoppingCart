@@ -35,7 +35,7 @@ def create_cart_item(incoming_cart_id):
         "quantity": item_returned.quantity,
         "category": item_returned.category,
         "cart_id": item_returned.cart_id
-        }) # https://docs.sqlalchemy.org/en/20/core/dml.html#sqlalchemy.sql.expression.Insert.returning
+        })# https://docs.sqlalchemy.org/en/20/core/dml.html#sqlalchemy.sql.expression.Insert.returning
 
 
 @bp.route("/", methods=["GET"])

@@ -1,4 +1,4 @@
-from flask import Flask, request, Blueprint, jsonify, Response
+from flask import Flask, request, Blueprint, jsonify, Response, make_response
 from sqlalchemy import insert, select, update, delete
 from backend import db
 from ..cart.model import Cart
@@ -134,6 +134,15 @@ def delete_all_carts():
     #             "creator": c.creator,
     #             "users": c.users
     #     } for c in carts])
+
+@bp.route("/verify-cart/<cart_id>", methods=["GET"])
+def verify_cart(cart_id):
+    resp = make_response()
+    cart_ids = db.session.scalar(select(Cart.id)).all()
+    for c_id in cart_ids:
+        if cart_id == c_id[0]:
+            return resp, 200
+    return resp, 404
 
 
 

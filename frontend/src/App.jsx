@@ -6,6 +6,7 @@ import SignIn from "./SignIn.jsx";
 import { AuthProvider } from "./context/AuthProvider.jsx";
 import User from "./User.jsx";
 import RedirectRoute from "./RedirectRoute.jsx";
+import InternalError from "./InternalError.jsx";
 
 function App() {
     return (
@@ -39,6 +40,7 @@ function App() {
                     ></Route>
                     <Route path="sign-up" element={<SignUp />}></Route>
                     <Route path="sign-in" element={<SignIn />}></Route>
+                    <Route path="404" element={<InternalError />}></Route>
                 </Routes>
             </AuthProvider>
         </HashRouter>

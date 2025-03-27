@@ -16,12 +16,20 @@ services:
             # target: development
         develop:
             watch:
+                # - action: sync+restart
+                #   path: ./backend
+                #   target: ./backend
+                #   ignore:
+                #       - env/
+                #       - __pycache__/
                 - action: sync
-                  path: /backend
-                  target: /backend
+                  path: ./backend
+                  target: /usr/src/backend
                   ignore:
                       - env/
                       - __pycache__/
+                - action: rebuild
+                  path: requirements.txt
         ports:
             - 8080:8080
 
@@ -31,9 +39,14 @@ services:
             # target: development
         develop:
             watch:
+                # - action: sync+restart
+                #   path: ./frontend
+                #   target: /frontend
+                #   ignore:
+                #       - node_modules/
                 - action: sync
-                  path: /frontend
-                  target: /frontend
+                  path: ./frontend
+                  target: /usr/src/frontend
                   ignore:
                       - node_modules/
                 - action: rebuild

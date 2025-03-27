@@ -104,7 +104,6 @@ def verify_user():
     return jsonify("failed"), 400 # TODO: check status codes
 
 
-
 # TODO: make email unique
 @bp.route("/", methods=["POST"])
 def create_user():

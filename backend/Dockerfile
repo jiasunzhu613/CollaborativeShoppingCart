@@ -1,11 +1,13 @@
 # Set base python3 image
 FROM --platform=$BUILDPLATFORM python:3.13.1-alpine AS builder
+# RUN adduser -D -u 1001 -s /bin/sh backend
+# USER backend
 
 # Set working directory
-WORKDIR /backend
+WORKDIR /usr/src/backend
 
 # Copy requirements.txt to install dependencies
-COPY requirements.txt /backend
+COPY requirements.txt /usr/src/backend
 # Install dependencies
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip3 install -r requirements.txt
@@ -22,5 +24,9 @@ ENV FLASK_RUN_PORT=8080
 # Expose port
 EXPOSE 8080
 
+# Copy source files into application directory
+# COPY --from=backend:backend . /backend
+
 # Start applications
-CMD ["flask", "run"]
+CMD ["python", "-m", "flask", "run"]
+
