@@ -37,15 +37,16 @@ jobs:
                   cache: "npm"
             - name: Install dependencies
               run: npm ci
+              working-directory: ./frontend # Specify the working directory
             - name: Build
               run: npm run build
+              working-directory: ./frontend # Specify the working directory
             - name: Setup Pages
               uses: actions/configure-pages@v4
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v3
               with:
-                  # Upload dist folder
-                  path: "./dist"
+                  path: "./frontend/dist" # Update the path to dist within the frontend directory
             - name: Deploy to GitHub Pages
               id: deployment
               uses: actions/deploy-pages@v4
