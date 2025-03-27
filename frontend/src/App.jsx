@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route, HashRouter } from "react-router";
 import CartsHome from "./CartsHome.jsx";
 import CartView from "./CartView.jsx";
 import SignUp from "./SignUp.jsx";
@@ -9,7 +9,7 @@ import RedirectRoute from "./RedirectRoute.jsx";
 
 function App() {
     return (
-        <BrowserRouter>
+        <HashRouter>
             <AuthProvider>
                 <Routes>
                     <Route
@@ -41,7 +41,7 @@ function App() {
                     <Route path="sign-in" element={<SignIn />}></Route>
                 </Routes>
             </AuthProvider>
-        </BrowserRouter>
+        </HashRouter>
     );
 }
 
