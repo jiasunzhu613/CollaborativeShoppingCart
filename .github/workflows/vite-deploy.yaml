@@ -42,7 +42,7 @@ jobs:
               run: npm run build
               working-directory: ./frontend # Specify the working directory
               env:
-                token: ${{secrets.VITE_BACKEND}}
+                VITE_BACKEND: ${{secrets.VITE_BACKEND}}
             - name: Setup Pages
               uses: actions/configure-pages@v4
             - name: Upload artifact
