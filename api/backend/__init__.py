@@ -33,10 +33,11 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 client = genai.Client(api_key=GEMINI_API_KEY)
 BACKEND_URL = os.getenv("BACKEND_URL")
 
+
 # Function used to create the flask app, similar to if you used if __name__ == "__main__" then app.run() without the function
 def create_app():
-    # Create Flask application
     app = Flask(__name__)
+
     db_uri = os.getenv("DATABASE_URI")
 
     # if db_url is None:
@@ -59,7 +60,7 @@ def create_app():
     app.cli.add_command(init_db_command)
 
     # Initialize CORS
-    cors.init_app(app, origins=["http://localhost:3000"], supports_credentials=True)
+    cors.init_app(app, origins=["https://cart.jonathanzhu.com"], supports_credentials=True)
 
     # Register blueprints
 
@@ -69,6 +70,10 @@ def create_app():
     app.register_blueprint(user.bp, url_prefix="/user")
     app.register_blueprint(sessionID.bp, url_prefix="/session")
     app.register_blueprint(chatbot.bp, url_prefix="/chatbot")
+
+    @app.route("/test", methods=["GET"])
+    def test_route():
+        return "hey this is working!", 200
 
     return app
 
