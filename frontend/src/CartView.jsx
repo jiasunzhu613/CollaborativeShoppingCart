@@ -24,7 +24,7 @@ function CartView() {
     const [category, setCategory] = useState("");
     const [recipeDisplay, setRecipeDisplay] = useState(0);
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
-    const AUTHORIZATION_VALUE = import.meta.env.AUTHORIZATION_VALUE;
+    const AUTHORIZATION_VALUE = import.meta.env.VITE_AUTHORIZATION_VALUE;
     const navigate = useNavigate();
 
     // TODO: check status, return table not found if uuid is invalid
