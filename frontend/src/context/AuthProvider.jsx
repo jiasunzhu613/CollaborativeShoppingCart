@@ -7,8 +7,8 @@ export function AuthProvider({ children }) {
     const [auth, setAuth] = useState({});
     const [loading, setLoading] = useState(1);
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
-    const AUTHORIZATION_VALUE = import.meta.env.VITE_AUTHORIZATION_VALUE;
-
+    const AUTHORIZATION_VALUE = import.meta.env.VITE_AUTHORIZATION_VALUE; // REMEMBER TO HAVE THE VITE_ PREFIX!!!
+    console.log("auth value:", AUTHORIZATION_VALUE);
     const navigate = useNavigate();
 
     useEffect(() => {
