@@ -86,8 +86,8 @@ def verify_user():
         }))
         expire_date = datetime.datetime.now()
         expire_date = expire_date + datetime.timedelta(days=14) 
-        resp.set_cookie("session_id", value=str(new_session.session_id), domain="localhost", httponly=True, samesite="Lax", expires=expire_date, secure=True) #secure=True
-        resp.set_cookie("user_id", value=str(user.id), domain='localhost', httponly=True, samesite="Lax", expires=expire_date, secure=True) # secure=True
+        resp.set_cookie("session_id", value=str(new_session.session_id), httponly=True, samesite="None", expires=expire_date, secure=True, partitioned=True) #secure=True
+        resp.set_cookie("user_id", value=str(user.id) , httponly=True, samesite="None", expires=expire_date, secure=True, partitioned=True) # secure=True
         resp.headers["Access-Control-Allow-Credentials"] = "true"
         resp.headers["Access-Control-Allow-Origin"] = "https://cart.jonathanzhu.com"
         return resp, 200

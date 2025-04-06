@@ -26,7 +26,6 @@ class Base(DeclarativeBase):  # remember to define as class!
 
 # Create SQL db model that will load a db engine
 db = SQLAlchemy(model_class=Base)
-cors = CORS()
 
 # Initialize Gemini instance
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -37,6 +36,9 @@ BACKEND_URL = os.getenv("BACKEND_URL")
 # Function used to create the flask app, similar to if you used if __name__ == "__main__" then app.run() without the function
 def create_app():
     app = Flask(__name__)
+
+     # Initialize CORS
+    CORS(app, origins=["https://cart.jonathanzhu.com"], supports_credentials=True) #origins=["https://cart.jonathanzhu.com"]
 
     db_uri = os.getenv("DATABASE_URI")
 
@@ -58,9 +60,6 @@ def create_app():
     # Initialize Flask-SQLalchemy and database
     db.init_app(app)
     app.cli.add_command(init_db_command)
-
-    # Initialize CORS
-    cors.init_app(app, origins=["https://cart.jonathanzhu.com"], supports_credentials=True)
 
     # Register blueprints
 

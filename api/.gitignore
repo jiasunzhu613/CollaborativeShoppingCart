@@ -1,4 +1,5 @@
 zappa_settings.json
+api-dev-template*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
