@@ -7,7 +7,7 @@ function CreateCart({ handleNewCart }) {
     const [cartDesc, setCartDesc] = useState("");
     const cartCreationRef = useRef(); // ref that will point to our cart creation div
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
-    const AUTHORIZATION_VALUE = import.meta.env.AUTHORIZATION_VALUE;
+    const AUTHORIZATION_VALUE = import.meta.env.VITE_AUTHORIZATION_VALUE;
 
     // TODO: brings pop up down that maybe says something like "CREATED"
     // TODO: perform empty checks

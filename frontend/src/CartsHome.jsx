@@ -15,7 +15,7 @@ function CartsHome() {
     const [loading, setLoading] = useState(0);
     // const [validSession, setValidSession] = useState(0);
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
-    const AUTHORIZATION_VALUE = import.meta.env.AUTHORIZATION_VALUE;
+    const AUTHORIZATION_VALUE = import.meta.env.VITE_AUTHORIZATION_VALUE;
     const navigate = useNavigate();
 
     async function delete_cart(uuid) {

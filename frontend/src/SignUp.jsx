@@ -7,7 +7,7 @@ function SignUp() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
-    const AUTHORIZATION_VALUE = import.meta.env.AUTHORIZATION_VALUE;
+    const AUTHORIZATION_VALUE = import.meta.env.VITE_AUTHORIZATION_VALUE;
     const navigate = useNavigate();
     // let history = useHistory();
 

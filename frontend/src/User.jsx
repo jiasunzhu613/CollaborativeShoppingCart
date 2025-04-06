@@ -8,7 +8,7 @@ function User() {
     const [userInfo, setUserInfo] = useState({});
     let { uuid } = useParams();
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
-    const AUTHORIZATION_VALUE = import.meta.env.AUTHORIZATION_VALUE;
+    const AUTHORIZATION_VALUE = import.meta.env.VITE_AUTHORIZATION_VALUE;
 
     useEffect(() => {
         function getUserInfo() {

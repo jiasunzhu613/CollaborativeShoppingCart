@@ -18,7 +18,7 @@ function NavBar() {
     const { auth, setAuth } = useContext(AuthContext);
     // const navigate = useNavigate();
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
-    const AUTHORIZATION_VALUE = import.meta.env.AUTHORIZATION_VALUE;
+    const AUTHORIZATION_VALUE = import.meta.env.VITE_AUTHORIZATION_VALUE;
     // let user_id = auth["user_id"];
 
     function handleSignOut() {
