@@ -43,6 +43,7 @@ jobs:
               working-directory: ./frontend # Specify the working directory
               env:
                 VITE_BACKEND: ${{secrets.VITE_BACKEND}}
+                VITE_AUTHORIZATION_VALUE: ${{secrets.VITE_AUTHORIZATION_VALUE}}
             - name: Setup Pages
               uses: actions/configure-pages@v4
             - name: Upload artifact
