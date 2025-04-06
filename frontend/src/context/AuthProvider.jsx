@@ -7,6 +7,8 @@ export function AuthProvider({ children }) {
     const [auth, setAuth] = useState({});
     const [loading, setLoading] = useState(1);
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
+    const authorizationValue = import.meta.env.authorizationValue;
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -20,6 +22,7 @@ export function AuthProvider({ children }) {
                 credentials: "include",
                 headers: {
                     "Access-Control-Allow-Credentials": true,
+                    authorizationValue: authorizationValue,
                 },
             })
                 .catch((error) => {
