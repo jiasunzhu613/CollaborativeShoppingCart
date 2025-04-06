@@ -105,7 +105,9 @@ function CartsHome() {
             await fetch(URL, {
                 method: "GET",
                 credentials: "include",
-                authorizationToken: AUTHORIZATION_VALUE,
+                headers: {
+                    authorizationToken: AUTHORIZATION_VALUE,
+                }
             })
                 .then((response) => {
                     return response.json();
