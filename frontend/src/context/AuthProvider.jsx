@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
                 credentials: "include",
                 headers: {
                     "Access-Control-Allow-Credentials": true,
-                    authorizationValue: authorizationValue,
+                    authorizationToken: authorizationValue,
                 },
             })
                 .catch((error) => {

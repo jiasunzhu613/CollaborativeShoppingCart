@@ -17,7 +17,7 @@ function User() {
                 method: "GET",
                 // credentials: "include",
                 headers: {
-                    authorizationValue: authorizationValue,
+                    authorizationToken: authorizationValue,
                 },
             })
                 .catch((error) => {

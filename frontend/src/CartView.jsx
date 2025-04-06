@@ -42,7 +42,7 @@ function CartView() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                authorizationValue: authorizationValue,
+                authorizationToken: authorizationValue,
             },
             body: JSON.stringify(content),
         })
@@ -68,7 +68,7 @@ function CartView() {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-                authorizationValue: authorizationValue,
+                authorizationToken: authorizationValue,
             },
         })
             .then((response) => {
@@ -86,7 +86,7 @@ function CartView() {
             await fetch(URL, {
                 method: "GET",
                 headers: {
-                    authorizationValue: authorizationValue,
+                    authorizationToken: authorizationValue,
                 },
             })
                 .catch((error) => {
@@ -110,7 +110,7 @@ function CartView() {
             await fetch(URL, {
                 method: "GET",
                 headers: {
-                    authorizationValue: authorizationValue,
+                    authorizationToken: authorizationValue,
                 },
             })
                 .catch((error) => {

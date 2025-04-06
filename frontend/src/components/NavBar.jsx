@@ -32,7 +32,7 @@ function NavBar() {
             headers: {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Credentials": true,
-                authorizatonValue: authorizationValue,
+                authorizationToken: authorizationValue,
             },
             body: JSON.stringify(contents),
         })

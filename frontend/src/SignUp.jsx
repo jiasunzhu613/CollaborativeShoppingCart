@@ -24,7 +24,7 @@ function SignUp() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                authorizationValue: authorizationValue,
+                authorizationToken: authorizationValue,
             },
             body: JSON.stringify(contents),
         })

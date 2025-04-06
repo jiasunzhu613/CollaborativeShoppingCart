@@ -24,7 +24,7 @@ function CartsHome() {
             method: "DELETE",
             credentials: "include",
             headers: {
-                authorizationValue: authorizationValue,
+                authorizationToken: authorizationValue,
             },
         })
             .then((response) => {

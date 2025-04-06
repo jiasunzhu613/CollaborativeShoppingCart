@@ -39,7 +39,7 @@ function CreateCart({ handleNewCart }) {
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",
-                authorizationValue: authorizationValue,
+                authorizationToken: authorizationValue,
             },
             body: JSON.stringify(data),
         })
