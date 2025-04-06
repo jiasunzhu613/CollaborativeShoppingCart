@@ -24,6 +24,7 @@ function CartView() {
     const [category, setCategory] = useState("");
     const [recipeDisplay, setRecipeDisplay] = useState(0);
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
+    const authorizationValue = import.meta.env.authorizationValue;
     const navigate = useNavigate();
 
     // TODO: check status, return table not found if uuid is invalid
@@ -41,6 +42,7 @@ function CartView() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                authorizationValue: authorizationValue,
             },
             body: JSON.stringify(content),
         })
@@ -66,6 +68,7 @@ function CartView() {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
+                authorizationValue: authorizationValue,
             },
         })
             .then((response) => {
@@ -82,6 +85,9 @@ function CartView() {
 
             await fetch(URL, {
                 method: "GET",
+                headers: {
+                    authorizationValue: authorizationValue,
+                },
             })
                 .catch((error) => {
                     console.log(error);
@@ -103,6 +109,9 @@ function CartView() {
 
             await fetch(URL, {
                 method: "GET",
+                headers: {
+                    authorizationValue: authorizationValue,
+                },
             })
                 .catch((error) => {
                     console.log(error);

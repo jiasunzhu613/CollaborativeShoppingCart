@@ -8,6 +8,7 @@ function User() {
     const [userInfo, setUserInfo] = useState({});
     let { uuid } = useParams();
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
+    const authorizationValue = import.meta.env.authorizationValue;
 
     useEffect(() => {
         function getUserInfo() {
@@ -15,9 +16,9 @@ function User() {
             return fetch(URL, {
                 method: "GET",
                 // credentials: "include",
-                // headers: {
-                //     "Access-Control-Allow-Credentials": true,
-                // },
+                headers: {
+                    authorizationValue: authorizationValue,
+                },
             })
                 .catch((error) => {
                     console.log(error);

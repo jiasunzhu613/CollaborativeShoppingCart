@@ -18,6 +18,7 @@ function NavBar() {
     const { auth, setAuth } = useContext(AuthContext);
     // const navigate = useNavigate();
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
+    const authorizationValue = import.meta.env.authorizationValue;
     // let user_id = auth["user_id"];
 
     function handleSignOut() {
@@ -31,6 +32,7 @@ function NavBar() {
             headers: {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Credentials": true,
+                authorizatonValue: authorizationValue,
             },
             body: JSON.stringify(contents),
         })

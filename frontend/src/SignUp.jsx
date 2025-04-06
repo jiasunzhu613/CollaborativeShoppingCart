@@ -7,6 +7,7 @@ function SignUp() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
+    const authorizationValue = import.meta.env.authorizationValue;
     const navigate = useNavigate();
     // let history = useHistory();
 
@@ -23,6 +24,7 @@ function SignUp() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                authorizationValue: authorizationValue,
             },
             body: JSON.stringify(contents),
         })

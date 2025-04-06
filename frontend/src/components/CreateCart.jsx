@@ -7,6 +7,7 @@ function CreateCart({ handleNewCart }) {
     const [cartDesc, setCartDesc] = useState("");
     const cartCreationRef = useRef(); // ref that will point to our cart creation div
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
+    const authorizationValue = import.meta.env.authorizationValue;
 
     // TODO: brings pop up down that maybe says something like "CREATED"
     // TODO: perform empty checks
@@ -38,6 +39,7 @@ function CreateCart({ handleNewCart }) {
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",
+                authorizationValue: authorizationValue,
             },
             body: JSON.stringify(data),
         })

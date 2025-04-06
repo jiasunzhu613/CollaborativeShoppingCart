@@ -15,6 +15,7 @@ function CartsHome() {
     const [loading, setLoading] = useState(0);
     // const [validSession, setValidSession] = useState(0);
     const BACKEND_URL = import.meta.env.VITE_BACKEND;
+    const authorizationValue = import.meta.env.authorizationValue;
     const navigate = useNavigate();
 
     async function delete_cart(uuid) {
@@ -22,6 +23,9 @@ function CartsHome() {
         await fetch(URL, {
             method: "DELETE",
             credentials: "include",
+            headers: {
+                authorizationValue: authorizationValue,
+            },
         })
             .then((response) => {
                 return response.json();
