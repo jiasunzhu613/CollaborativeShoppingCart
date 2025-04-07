@@ -38,7 +38,7 @@ def create_app():
     app = Flask(__name__)
 
      # Initialize CORS
-    CORS(app, origins=["*"], supports_credentials=True) #origins=["https://cart.jonathanzhu.com"]
+    CORS(app, origins=["https://cart.jonathanzhu.com"], supports_credentials=True) #origins=["https://cart.jonathanzhu.com"]
 
     db_uri = os.getenv("DATABASE_URI")
 
