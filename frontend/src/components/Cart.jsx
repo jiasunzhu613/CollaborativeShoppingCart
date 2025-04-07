@@ -33,7 +33,7 @@ function Cart({ items, addItem, deleteItem }) {
     }
 
     return (
-        <div className="my-2 w-1/2">
+        <div className="my-2 w-full">
             <hr className="bg-slate-600"></hr>
             {items.map((item) => (
                 <>

@@ -183,91 +183,97 @@ function CartView() {
     return (
         <>
             <NavBar></NavBar>
-            <div className="mx-10">
-                <div className="w-1/2">
-                    <h1 className="font-black text-5xl mb-1">
-                        {localStorage.getItem("title")}
-                    </h1>
-                    <h2
-                        className={`font-light break-words ${
-                            wantToTruncate ? `truncate` : ``
-                        } mb-2`}
-                        onClick={() => {
-                            setWantToTruncate((wtt) => !wtt);
-                        }}
-                    >
-                        {localStorage.getItem("description")}
-                    </h2>
-                    <hr className="bg-gray-700 mb-2"></hr>
-                    <h1 className="font-black text-3xl mb-1">ITEMS</h1>
-                    <div className="flex">
-                        <Select
-                            value={category}
-                            onValueChange={(category) => {
-                                console.log(category);
-                                filterByCategory(category);
+            <div className="mx-10 flex justify-center flex-1">
+                <div className="flex-col w-[80%]">
+                    <div className="w-full">
+                        <h1 className="font-black text-5xl mb-1">
+                            {localStorage.getItem("title")}
+                        </h1>
+                        <h2
+                            className={`font-light break-words ${
+                                wantToTruncate ? `truncate` : ``
+                            } mb-2`}
+                            onClick={() => {
+                                setWantToTruncate((wtt) => !wtt);
                             }}
                         >
-                            <SelectTrigger className="border shadow-sm rounded-md mr-2 w-[30%]">
-                                <SelectValue placeholder="Select a Category" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Categories</SelectLabel>
-                                    <SelectItem value="Fruit & Veg">
-                                        Fruit & Veg
-                                    </SelectItem>
-                                    <SelectItem value="Meat">Meat</SelectItem>
-                                    <SelectItem value="Snacks">
-                                        Snacks
-                                    </SelectItem>
-                                    <SelectItem value="Grains">
-                                        Grains
-                                    </SelectItem>
-                                    <SelectItem value="Other">Other</SelectItem>
-                                    {category && (
-                                        <SelectItem value={undefined}>
-                                            None
-                                        </SelectItem>
-                                    )}
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-
-                        <input
-                            id="filter"
-                            placeholder="Filter"
-                            className="border shadow-sm py-1 px-2 rounded-md outline-none w-full"
-                            onChange={() => filterByString()}
-                        ></input>
-                        <div className="flex-col">
-                            <button
-                                id="chat-button"
-                                className="p-1 m-1 border shadow-sm rounded-full"
-                                onClick={() =>
-                                    setRecipeDisplay((recipe) => !recipe)
-                                }
+                            {localStorage.getItem("description")}
+                        </h2>
+                        <hr className="bg-gray-700 mb-2"></hr>
+                        <h1 className="font-black text-3xl mb-1">ITEMS</h1>
+                        <div className="flex">
+                            <Select
+                                value={category}
+                                onValueChange={(category) => {
+                                    console.log(category);
+                                    filterByCategory(category);
+                                }}
                             >
-                                <ChatBubbleIcon className="m-1" />
-                            </button>
-                            {recipeDisplay ? (
-                                <div className="absolute float border shadow-sm bg-white rounded-lg p-2">
-                                    <h3>Want to try a new recipe?</h3>
-                                    <input
-                                        id="recipe"
-                                        placeholder="Recipe"
-                                        className="border shadow-sm py-1 px-2 rounded-md outline-none w-full"
-                                    ></input>
-                                </div>
-                            ) : null}
+                                <SelectTrigger className="border shadow-sm rounded-md mr-2 w-[30%]">
+                                    <SelectValue placeholder="Select a Category" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectLabel>Categories</SelectLabel>
+                                        <SelectItem value="Fruit & Veg">
+                                            Fruit & Veg
+                                        </SelectItem>
+                                        <SelectItem value="Meat">
+                                            Meat
+                                        </SelectItem>
+                                        <SelectItem value="Snacks">
+                                            Snacks
+                                        </SelectItem>
+                                        <SelectItem value="Grains">
+                                            Grains
+                                        </SelectItem>
+                                        <SelectItem value="Other">
+                                            Other
+                                        </SelectItem>
+                                        {category && (
+                                            <SelectItem value={undefined}>
+                                                None
+                                            </SelectItem>
+                                        )}
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+
+                            <input
+                                id="filter"
+                                placeholder="Filter"
+                                className="border shadow-sm py-1 px-2 rounded-md outline-none w-full"
+                                onChange={() => filterByString()}
+                            ></input>
+                            <div className="flex-col">
+                                <button
+                                    id="chat-button"
+                                    className="p-1 m-1 border shadow-sm rounded-full"
+                                    onClick={() =>
+                                        setRecipeDisplay((recipe) => !recipe)
+                                    }
+                                >
+                                    <ChatBubbleIcon className="m-1" />
+                                </button>
+                                {recipeDisplay ? (
+                                    <div className="absolute float border shadow-sm bg-white rounded-lg p-2">
+                                        <h3>Want to try a new recipe?</h3>
+                                        <input
+                                            id="recipe"
+                                            placeholder="Recipe"
+                                            className="border shadow-sm py-1 px-2 rounded-md outline-none w-full"
+                                        ></input>
+                                    </div>
+                                ) : null}
+                            </div>
                         </div>
                     </div>
+                    <Cart
+                        items={filteredItems}
+                        addItem={addItem}
+                        deleteItem={deleteItem}
+                    ></Cart>
                 </div>
-                <Cart
-                    items={filteredItems}
-                    addItem={addItem}
-                    deleteItem={deleteItem}
-                ></Cart>
             </div>
         </>
     );
