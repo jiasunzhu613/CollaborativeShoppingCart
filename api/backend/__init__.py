@@ -37,7 +37,7 @@ BACKEND_URL = os.getenv("BACKEND_URL")
 def create_app():
     app = Flask(__name__)
 
-     # Initialize CORS
+    # Initialize CORS
     CORS(app, origins=["https://cart.jonathanzhu.com"], supports_credentials=True) #origins=["https://cart.jonathanzhu.com"]
 
     db_uri = os.getenv("DATABASE_URI")
@@ -69,10 +69,6 @@ def create_app():
     app.register_blueprint(user.bp, url_prefix="/user")
     app.register_blueprint(sessionID.bp, url_prefix="/session")
     app.register_blueprint(chatbot.bp, url_prefix="/chatbot")
-
-    @app.route("/test", methods=["GET"])
-    def test_route():
-        return "hey this is working!", 200
 
     return app
 
